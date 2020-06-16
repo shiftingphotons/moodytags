@@ -1,0 +1,2 @@
+module MoodyTags
+end

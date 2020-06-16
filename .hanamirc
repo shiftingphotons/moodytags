@@ -1,0 +1,3 @@
+project=moody_tags
+test=rspec
+template=erb

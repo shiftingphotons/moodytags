@@ -1,0 +1,19 @@
+version: '3'
+services:
+  db:
+    image: postgres:11
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=moody_tags
+      - POSTGRES_PASSWORD=moody_tags
+      - POSTGRES_DB=moody_tags_development
+  web:
+    build: .
+    command: bundle exec hanami server --host=0.0.0.0 --port=3000
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
