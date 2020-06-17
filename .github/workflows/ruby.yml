@@ -21,6 +21,7 @@ jobs:
     - name: Setup PostgreSQL
       uses: Harmon758/postgresql-action@v1.0.0
       with:
+        postgresql db: moody_tags_test
         postgresql user: moody_tags
         postgresql password: moody_tags
 
