@@ -17,9 +17,18 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.6
+        
+    - name: Setup PostgreSQL
+      uses: Harmon758/postgresql-action@v1.0.0
+      with:
+        postgresql db: moody_tags_test
+        postgresql user: moody_tags
+        postgresql password: moody_tags
 
     - name: Install dependencies
       run: bundle install
 
     - name: Run tests
-      run: bundle exec rake
+      run: bundle exec rake spec
+      env:
+        HANAMI_ENV: test
