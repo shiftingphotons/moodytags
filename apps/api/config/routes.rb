@@ -2,4 +2,4 @@
 # See: https://guides.hanamirb.org/routing/overview
 #
 # Example:
-# get '/hello', to: ->(env) { [200, {}, ['Hello from Hanami!']] }
+get '/ping', to: ->(env) { [200, {}, ['pong']] }

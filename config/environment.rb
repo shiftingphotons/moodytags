@@ -2,10 +2,10 @@ require 'bundler/setup'
 require 'hanami/setup'
 require 'hanami/model'
 require_relative '../lib/moody_tags'
-require_relative '../apps/web/application'
+require_relative '../apps/api/application'
 
 Hanami.configure do
-  mount Web::Application, at: '/'
+  mount Api::Application, at: '/api'
 
   model do
     ##
@@ -19,6 +19,11 @@ Hanami.configure do
     #    adapter :sql, 'mysql://localhost/moody_tags_development'
     #
     adapter :sql, ENV.fetch('DATABASE_URL')
+
+    gateway do |g|
+      g.connection.extension(:pg_array)
+      g.connection.extension(:pg_json)
+    end
 
     ##
     # Migrations
