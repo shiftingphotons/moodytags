@@ -1,4 +1,6 @@
 require 'hanami/helpers'
+require 'omniauth'
+require 'rspotify/oauth'
 
 module ApiV1
   class Application < Hanami::Application
@@ -79,11 +81,22 @@ module ApiV1
       #
       # See: http://www.rubydoc.info/gems/rack/Rack/Session/Cookie
       #
-      # sessions :cookie, secret: ENV['API_SESSIONS_SECRET']
+      sessions :cookie, secret: ENV['AUTH_SESSIONS_SECRET']
 
       # Configure Rack middleware for this application
       #
       # middleware.use Rack::Protection
+      #
+
+			middleware.use Warden::Manager do |manager|
+        manager.default_strategies :basic
+        manager.failure_app = ApiV1::Controllers::Taggables::Index.new
+      end
+
+
+      middleware.use OmniAuth::Builder do
+        provider :spotify, "98f9ebb06dae4715bec40fb61b34c2b0", "931d0310113e4defb19f6e5493c9fe4d", scope: 'user-library-read playlist-read-collaborative playlist-modify-private playlist-modify-public playlist-read-private'
+      end
 
       # Default format for the requests that don't specify an HTTP_ACCEPT header
       # Argument: A symbol representation of a mime type, defaults to :html
@@ -194,8 +207,8 @@ module ApiV1
       #
       # See: http://www.rubydoc.info/gems/hanami-controller#Configuration
       controller.prepare do
-        include ApiV1::Controllers::Auth # included in all the actions
-        before :authenticate    # run an authentication before callback
+        # include MyAuthentication # included in all the actions
+        # before :authenticate!    # run an authentication before callback
       end
     end
 

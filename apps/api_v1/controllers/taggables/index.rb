@@ -7,15 +7,24 @@ module ApiV1
       class Index
         include ApiV1::Action
 
-        def call(params)
-          byebug
-          # taggables = TaggableRepository.new
-          # self.body = {taggables: taggables.all.map(&:to_h)}.to_s
+        before :current_user
+
+        def initialize
+          @taggables = TaggableRepository.new
         end
 
-        def authenticate
-          byebug
+        def call(params)
+          if @current_user.nil?
+            return status 401, []
+          end
+          self.body = {taggables: @taggables.all.map(&:to_h)}.to_s
         end
+
+				private
+        def current_user
+          @current_user = request.env['warden'].user
+        end
+
       end
     end
   end

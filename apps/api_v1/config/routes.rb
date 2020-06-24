@@ -5,6 +5,8 @@
 get '/ping', to: ->(env) { [200, {}, ['pong']] }
 
 # V1
-get '/taggables', to: 'taggables#index'
-patch '/taggables/:id', to: 'taggables#update'
-get '/auth/authenticate', to: 'auth#authenticate'
+get '/api/v1/taggables', to: 'taggables#index'
+patch '/api/v1/taggables/:id', to: 'taggables#update'
+
+# Auth
+get '/auth/spotify/callback', to: 'auth#spotify'

@@ -1,10 +1,10 @@
 require 'rspotify'
 
-module Auth
+module ApiV1
   module Controllers
-    module Spotify
-      class Callback
-        include Auth::Action
+    module Auth
+      class Spotify
+        include ApiV1::Action
 
         def initialize
           @users = UserRepository.new

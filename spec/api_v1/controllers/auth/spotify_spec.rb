@@ -1,4 +1,4 @@
-RSpec.describe Auth::Controllers::Spotify::Callback, type: :action do
+RSpec.describe ApiV1::Controllers::Auth::Spotify, type: :action do
   let(:action) { described_class.new }
   let(:params) { Hash[] }
 
