@@ -13,6 +13,7 @@ module ApiV1
         end
 
         def call(params)
+          byebug
           if params.valid?
             taggable = @repository.find(params[:id])
             # TODO Fix the mess

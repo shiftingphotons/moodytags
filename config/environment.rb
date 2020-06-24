@@ -4,9 +4,11 @@ require 'hanami/model'
 require "hanami/middleware/body_parser"
 require_relative '../lib/moody_tags'
 require_relative '../apps/api_v1/application'
+require_relative '../apps/auth/application'
 
 Hanami.configure do
   mount ApiV1::Application, at: '/api/v1'
+  mount Auth::Application, at: '/'
 
   middleware.use Hanami::Middleware::BodyParser, :json
 

@@ -3,7 +3,7 @@ Hanami::Model.migration do
     create_table :taggables do
       primary_key :id
 
-      column :ext_user_id, String,   null: false
+      foreign_key :user_id, :users, on_delete: :cascade, null: false
       column :ext_id,      String,   null: false
       column :tags,        "text[]", null: false
       column :created_at,  DateTime, null: false

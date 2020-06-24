@@ -1,6 +1,8 @@
 require 'hanami/helpers'
+require 'omniauth'
+require 'rspotify/oauth'
 
-module ApiV1
+module Auth
   class Application < Hanami::Application
     configure do
       ##
@@ -79,21 +81,33 @@ module ApiV1
       #
       # See: http://www.rubydoc.info/gems/rack/Rack/Session/Cookie
       #
-      # sessions :cookie, secret: ENV['API_SESSIONS_SECRET']
+      sessions :cookie, secret: ENV['AUTH_SESSIONS_SECRET']
 
       # Configure Rack middleware for this application
       #
       # middleware.use Rack::Protection
+      #
+
+			middleware.use Warden::Manager do |manager|
+        manager.default_strategies :basic
+        manager.failure_app = ApiV1::Controllers::Taggables::Index.new
+      end
+
+
+      middleware.use OmniAuth::Builder do
+        provider :spotify, "98f9ebb06dae4715bec40fb61b34c2b0", "931d0310113e4defb19f6e5493c9fe4d", scope: 'user-library-read playlist-read-collaborative playlist-modify-private playlist-modify-public playlist-read-private'
+      end
+
 
       # Default format for the requests that don't specify an HTTP_ACCEPT header
       # Argument: A symbol representation of a mime type, defaults to :html
       #
-      default_request_format :json
+      # default_request_format :html
 
       # Default format for responses that don't consider the request format
       # Argument: A symbol representation of a mime type, defaults to :html
       #
-      default_response_format :json
+      # default_response_format :html
 
       ##
       # SECURITY
@@ -189,13 +203,13 @@ module ApiV1
       # FRAMEWORKS
       #
 
-      # Configure the code that will yield each time ApiV1::Action is included
+      # Configure the code that will yield each time Auth::Action is included
       # This is useful for sharing common functionality
       #
       # See: http://www.rubydoc.info/gems/hanami-controller#Configuration
       controller.prepare do
-        include ApiV1::Controllers::Auth # included in all the actions
-        before :authenticate    # run an authentication before callback
+        # include MyAuthentication # included in all the actions
+        # before :authenticate!    # run an authentication before callback
       end
     end
 
@@ -222,6 +236,31 @@ module ApiV1
       # scheme 'https'
       # host   'example.org'
       # port   443
+
+      assets do
+        # Don't compile static assets in production mode (eg. Sass, ES6)
+        #
+        # See: http://www.rubydoc.info/gems/hanami-assets#Configuration
+        compile false
+
+        # Use fingerprint file name for asset paths
+        #
+        # See: https://guides.hanamirb.org/assets/overview
+        fingerprint true
+
+        # Content Delivery Network (CDN)
+        #
+        # See: https://guides.hanamirb.org/assets/content-delivery-network
+        #
+        # scheme 'https'
+        # host   'cdn.example.org'
+        # port   443
+
+        # Subresource Integrity
+        #
+        # See: https://guides.hanamirb.org/assets/content-delivery-network/#subresource-integrity
+        subresource_integrity :sha256
+      end
     end
   end
 end

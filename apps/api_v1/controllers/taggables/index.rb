@@ -1,4 +1,5 @@
 require 'json'
+require 'rspotify'
 
 module ApiV1
   module Controllers
@@ -7,8 +8,13 @@ module ApiV1
         include ApiV1::Action
 
         def call(params)
-          taggables = TaggableRepository.new
-          self.body = {taggables: taggables.all.map(&:to_h)}.to_s
+          byebug
+          # taggables = TaggableRepository.new
+          # self.body = {taggables: taggables.all.map(&:to_h)}.to_s
+        end
+
+        def authenticate
+          byebug
         end
       end
     end
