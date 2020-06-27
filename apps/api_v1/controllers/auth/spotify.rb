@@ -25,10 +25,9 @@ module ApiV1
 
 					warden.set_user user
 
-					# redirect_to "/"
-          # TODO Redirect to home of app
-          self.body = 'OK'
+					redirect_to "/app"
         end
+
       end
     end
   end

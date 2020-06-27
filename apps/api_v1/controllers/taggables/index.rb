@@ -7,24 +7,42 @@ module ApiV1
       class Index
         include ApiV1::Action
 
-        before :current_user
-
         def initialize
           @taggables = TaggableRepository.new
         end
 
         def call(params)
-          if @current_user.nil?
-            return status 401, []
+          sections = {
+            untagged: []
+          }
+
+          playlists = @spotify_user.playlists(limit: 50, offset: 0)
+          grouped_taggables = @taggables.find_by_user_id(current_user.id).group_by {|t| t.ext_id}
+
+          # byebug
+          for p in playlists do
+            playlist_hash = {
+              id: p.id,
+              name: p.name,
+              images: p.images,
+              uri: p.uri
+            }
+
+            if grouped_taggables[p.id]
+              tags = grouped_taggables[p.id].first.tags
+              for tag in tags do
+                if sections[tag]
+                  sections[tag] << playlist_hash
+                else
+                  sections[tag] = [playlist_hash]
+                end
+              end
+            end
           end
-          self.body = {taggables: @taggables.all.map(&:to_h)}.to_s
-        end
 
-				private
-        def current_user
-          @current_user = request.env['warden'].user
+          byebug
+          self.body = sections.to_json
         end
-
       end
     end
   end

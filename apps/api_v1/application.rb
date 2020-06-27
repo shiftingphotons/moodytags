@@ -1,6 +1,7 @@
 require 'hanami/helpers'
 require 'omniauth'
 require 'rspotify/oauth'
+require_relative './controllers/authentication'
 
 module ApiV1
   class Application < Hanami::Application
@@ -207,8 +208,8 @@ module ApiV1
       #
       # See: http://www.rubydoc.info/gems/hanami-controller#Configuration
       controller.prepare do
-        # include MyAuthentication # included in all the actions
-        # before :authenticate!    # run an authentication before callback
+        include ApiV1::Authentication # included in all the actions
+        before :authenticate!    # run an authentication before callback
       end
     end
 

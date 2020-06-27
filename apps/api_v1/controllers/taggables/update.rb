@@ -18,8 +18,7 @@ module ApiV1
             taggable = @repository.find(params[:id])
             # TODO Fix the mess
             if taggable.nil?
-              self.status = 404
-              return
+              halt 404
             end
             updated_taggable = @repository.update(taggable.id, {tags: params.get(:tags)})
             self.body = JSON.generate(updated_taggable.to_h)
