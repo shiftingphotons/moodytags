@@ -23,9 +23,9 @@ module ApiV1
             )
           end
 
-					warden.set_user user
+          warden.set_user user
 
-					redirect_to "/app"
+          redirect_to "/app"
         end
 
       end

@@ -11,16 +11,6 @@ Hanami.configure do
   middleware.use Hanami::Middleware::BodyParser, :json
 
   model do
-    ##
-    # Database adapter
-    #
-    # Available options:
-    #
-    #  * SQL adapter
-    #    adapter :sql, 'sqlite://db/moody_tags_development.sqlite3'
-    #    adapter :sql, 'postgresql://localhost/moody_tags_development'
-    #    adapter :sql, 'mysql://localhost/moody_tags_development'
-    #
     adapter :sql, ENV.fetch('DATABASE_URL')
 
     gateway do |g|
