@@ -3,7 +3,7 @@ class UserRepository < Hanami::Repository
     has_many :taggables
   end
 
-  def by_ext_id(ext_id)
+  def find_by_ext_id(ext_id)
     users.where(ext_id: ext_id).one
   end
 

@@ -82,7 +82,7 @@ module ApiV1
       #
       # See: http://www.rubydoc.info/gems/rack/Rack/Session/Cookie
       #
-      sessions :cookie, secret: ENV['AUTH_SESSIONS_SECRET']
+      sessions :cookie, secret: ENV['API_V1_SESSIONS_SECRET']
 
       # Configure Rack middleware for this application
       #

@@ -14,7 +14,7 @@ module ApiV1
           warden = request.env['warden']
           spotify_user = RSpotify::User.new(request.env['omniauth.auth'])
 
-          user = @users.by_ext_id(spotify_user.id)
+          user = @users.find_by_ext_id(spotify_user.id)
           if !user
             user = @users.create(
               token: spotify_user.credentials.token,
