@@ -22,14 +22,16 @@ module ApiV1
           # byebug
           for p in playlists do
             playlist_hash = {
-              id: p.id,
+              ext_id: p.id,
               name: p.name,
               images: p.images,
               uri: p.uri
             }
 
             if grouped_taggables[p.id]
-              tags = grouped_taggables[p.id].first.tags
+              taggable = grouped_taggables[p.id].first
+              playlist_hash[:id] = taggable.id
+              tags = taggable.tags
               for tag in tags do
                 if sections[tag]
                   sections[tag] << playlist_hash

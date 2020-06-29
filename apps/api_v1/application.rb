@@ -92,7 +92,6 @@ module ApiV1
 
       middleware.use Warden::Manager do |manager|
         manager.default_strategies :basic
-        manager.failure_app = ApiV1::Controllers::Taggables::Index.new
       end
 
       middleware.use OmniAuth::Builder do

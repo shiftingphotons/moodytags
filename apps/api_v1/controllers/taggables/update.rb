@@ -5,7 +5,7 @@ module ApiV1
         include ApiV1::Action
 
         params do
-          required(:tags) { array? }
+          required(:tags) { array? { each { str?  }  }  }
         end
 
         def initialize()
@@ -13,18 +13,15 @@ module ApiV1
         end
 
         def call(params)
-          byebug
-          if params.valid?
-            taggable = @repository.find(params[:id])
-            # TODO Fix the mess
-            if taggable.nil?
-              halt 404
-            end
-            updated_taggable = @repository.update(taggable.id, {tags: params.get(:tags)})
-            self.body = JSON.generate(updated_taggable.to_h)
-          else
-            self.status = 400
+          halt 400 unless params.valid?
+
+          taggable = @repository.find(params[:id])
+          if taggable.nil?
+            halt 404
           end
+
+          updated_taggable = @repository.update(taggable.id, {tags: params.get(:tags)})
+          self.body = JSON.generate(updated_taggable.to_h)
         end
       end
     end
