@@ -228,9 +228,9 @@ DEPENDENCIES
   pg
   rake
   rspec
-  rspotify
+  rspotify (~> 2.4)
   shotgun
-  warden
+  warden (~> 1.2)
 
 BUNDLED WITH
    1.17.3

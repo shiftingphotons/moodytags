@@ -28,6 +28,10 @@ module ApiV1
           redirect_to "/app"
         end
 
+        private
+        def authenticate!
+
+        end
       end
     end
   end
