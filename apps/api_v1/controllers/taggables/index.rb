@@ -12,27 +12,27 @@ module ApiV1
         end
 
         def call(params)
-          sections = {
-            untagged: []
-          }
+          sections = {}
+          playlists = []
+          grouped_taggables = @taggables
+            .find_by_user_id(current_user.id)
+            .group_by {|t| t.ext_id}
 
-          playlists = @spotify_user.playlists(limit: 50, offset: 0)
-          grouped_taggables = @taggables.find_by_user_id(current_user.id).group_by {|t| t.ext_id}
+          # TODO
+          # This outlines a problem - how do we know how many playlists we need to preload
+          # since we can't know which of them are tagged without brute-force getting them one by one
+          # Pending solution...
+          # For now just get the first 200
+          for offset in (0..150).step(50) do
+            playlists.concat @spotify_user.playlists(limit: 50, offset: offset)
+          end
 
-          # byebug
           for p in playlists do
-            playlist_hash = {
-              ext_id: p.id,
-              name: p.name,
-              images: p.images,
-              uri: p.uri
-            }
-
             if grouped_taggables[p.id]
-              taggable = grouped_taggables[p.id].first
-              playlist_hash[:id] = taggable.id
-              tags = taggable.tags
-              for tag in tags do
+              t = grouped_taggables[p.id].first
+              playlist_hash = make_unified_hash(p, t)
+
+              for tag in t.tags do
                 if sections[tag]
                   sections[tag] << playlist_hash
                 else
@@ -42,8 +42,18 @@ module ApiV1
             end
           end
 
-          byebug
           self.body = sections.to_json
+        end
+
+        private
+        def make_unified_hash(playlist, taggable)
+            {
+              id: taggable.id,
+              ext_id: playlist.id,
+              name: playlist.name,
+              images: playlist.images,
+              uri: playlist.uri
+            }
         end
       end
     end
