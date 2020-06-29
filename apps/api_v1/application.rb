@@ -208,7 +208,6 @@ module ApiV1
       # See: http://www.rubydoc.info/gems/hanami-controller#Configuration
       controller.prepare do
         include ApiV1::Authentication # included in all the actions
-        before :authenticate!    # run an authentication before callback
       end
     end
 
