@@ -5,7 +5,6 @@ module ApiV1
         include ApiV1::Action
 
         def initialize
-          byebug
           @taggables = TaggableRepository.new
         end
 
