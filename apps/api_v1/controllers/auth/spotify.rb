@@ -25,7 +25,7 @@ module ApiV1
 
           warden.set_user user
 
-          redirect_to "/app"
+          redirect_to "http://localhost:8080"
         end
 
         private

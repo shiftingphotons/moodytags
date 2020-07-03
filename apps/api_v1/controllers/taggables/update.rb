@@ -23,6 +23,10 @@ module ApiV1
           updated_taggable = @repository.update(taggable.id, {tags: params.get(:tags)})
           self.body = JSON.generate(updated_taggable.to_h)
         end
+
+        def verify_csrf_token?
+          false
+        end
       end
     end
   end

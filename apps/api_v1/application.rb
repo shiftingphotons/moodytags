@@ -90,8 +90,20 @@ module ApiV1
       # middleware.use Rack::Protection
       #
 
+      middleware.use Rack::Cors do
+        allow do
+          origins 'http://localhost:8080'
+          resource '*',
+            headers: :any,
+            methods: [:get, :post, :patch, :put],
+            credentials: true
+        end
+        debug true
+      end
+
       middleware.use Warden::Manager do |manager|
         manager.default_strategies :basic
+        manager.failure_app = ApiV1::Controllers::Taggables::Index.new
       end
 
       middleware.use OmniAuth::Builder do

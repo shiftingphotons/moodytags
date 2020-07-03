@@ -14,6 +14,7 @@ module ApiV1
         def call(params)
           sections = {}
           playlists = []
+          # Probably needs extracting as this logic is used on another place too
           grouped_taggables = @taggables
             .find_by_user_id(current_user.id)
             .group_by {|t| t.ext_id}
@@ -54,6 +55,10 @@ module ApiV1
               images: playlist.images,
               uri: playlist.uri
             }
+        end
+
+        def verify_csrf_token?
+          false
         end
       end
     end

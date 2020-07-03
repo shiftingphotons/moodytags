@@ -1,9 +1,15 @@
 RSpec.describe "API V1 update taggable" do
   include Rack::Test::Methods
 
-  # app is required by Rack::Test
   let(:app) { Hanami.app }
-  let(:taggable) { TaggableRepository.new.create(ext_user_id: '01', ext_id: "10", tags: ["day"]) }
+  let(:users) { UserRepository.new }
+
+  let(:user) { users.create({token: "QWE", refresh_token: "RTY", ext_id: "39"}) }
+  let(:taggable) { TaggableRepository.new.create(user_id: user.id, ext_user_id: '01', ext_id: "10", tags: ["day"]) }
+
+  before(:each) do
+    login_as user
+  end
 
   it "is successful" do
     payload = {tags: ["night"]}

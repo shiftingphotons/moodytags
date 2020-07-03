@@ -1,4 +1,4 @@
-RSpec.describe ApiV1::Controllers::Auth::Spotify, type: :action do
+RSpec.describe ApiV1::Controllers::Taggables::Create, type: :action do
   let(:action) { described_class.new }
   let(:params) { Hash[] }
 
