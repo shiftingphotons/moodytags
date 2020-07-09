@@ -98,7 +98,6 @@ module ApiV1
             methods: [:get, :post, :patch, :put],
             credentials: true
         end
-        debug true
       end
 
       middleware.use Warden::Manager do |manager|
