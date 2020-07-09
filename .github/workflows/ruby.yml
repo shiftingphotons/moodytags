@@ -1,0 +1,41 @@
+name: Spec
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6
+
+    - name: Setup PostgreSQL
+      uses: Harmon758/postgresql-action@v1.0.0
+      with:
+        postgresql db: moody_tags_test
+        postgresql user: moody_tags
+        postgresql password: moody_tags
+
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Prepare DB
+      run: bundle exec hanami db prepare
+      env:
+        HANAMI_ENV: test
+        DB_HOST: localhost
+
+    - name: Run tests
+      run: bundle exec rake spec
+      env:
+        HANAMI_ENV: test
+        DB_HOST: localhost

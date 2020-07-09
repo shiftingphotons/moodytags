@@ -4,6 +4,10 @@ gem 'rake'
 gem 'hanami',       '~> 1.3'
 gem 'hanami-model', '~> 1.3'
 
+gem 'rspotify',     '~> 2.4'
+gem 'warden',       '~> 1.2'
+gem 'rack-cors',    '~> 1.1'
+
 gem 'pg'
 
 group :development do
@@ -15,6 +19,7 @@ end
 
 group :test, :development do
   gem 'dotenv', '~> 2.4'
+  gem 'byebug'
 end
 
 group :test do
