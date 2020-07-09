@@ -1,4 +1,4 @@
-RSpec.describe ApiV1::Controllers::Spotify::GetPlaylists, type: :action do
+RSpec.describe Api::Controllers::Spotify::GetPlaylists, type: :action do
   # let(:action) { described_class.new }
   # let(:params) { Hash[] }
   #

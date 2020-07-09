@@ -4,7 +4,7 @@ require 'rspotify/oauth'
 require_relative './controllers/authentication'
 Dotenv.load('.env.spotify')
 
-module ApiV1
+module Api
   class Application < Hanami::Application
     configure do
       ##
@@ -83,7 +83,7 @@ module ApiV1
       #
       # See: http://www.rubydoc.info/gems/rack/Rack/Session/Cookie
       #
-      sessions :cookie, secret: ENV['API_V1_SESSIONS_SECRET']
+      sessions :cookie, secret: ENV['API_SESSIONS_SECRET']
 
       # Configure Rack middleware for this application
       #
@@ -102,7 +102,7 @@ module ApiV1
 
       middleware.use Warden::Manager do |manager|
         manager.default_strategies :basic
-        manager.failure_app = ApiV1::Controllers::Taggables::Index.new
+        manager.failure_app = Api::Controllers::Taggables::Index.new
       end
 
       middleware.use OmniAuth::Builder do
@@ -213,12 +213,12 @@ module ApiV1
       # FRAMEWORKS
       #
 
-      # Configure the code that will yield each time ApiV1::Action is included
+      # Configure the code that will yield each time Api::Action is included
       # This is useful for sharing common functionality
       #
       # See: http://www.rubydoc.info/gems/hanami-controller#Configuration
       controller.prepare do
-        include ApiV1::Authentication # included in all the actions
+        include Api::Authentication # included in all the actions
       end
     end
 

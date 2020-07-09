@@ -1,8 +1,8 @@
-module ApiV1
+module Api
   module Controllers
     module Spotify
       class GetPlaylists
-        include ApiV1::Action
+        include Api::Action
 
         def initialize
           RSpotify.raw_response = true

@@ -1,4 +1,4 @@
-RSpec.describe ApiV1.routes do
+RSpec.describe Api.routes do
   it 'recognizes "GET /ping"' do
     env   = Rack::MockRequest.env_for('/ping')
     route = described_class.recognize(env)

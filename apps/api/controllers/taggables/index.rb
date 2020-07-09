@@ -1,11 +1,11 @@
 require 'json'
 require 'rspotify'
 
-module ApiV1
+module Api
   module Controllers
     module Taggables
       class Index
-        include ApiV1::Action
+        include Api::Action
 
         def initialize
           @taggables = TaggableRepository.new

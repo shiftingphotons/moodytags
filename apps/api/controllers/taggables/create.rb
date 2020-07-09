@@ -1,8 +1,8 @@
-module ApiV1
+module Api
   module Controllers
     module Taggables
       class Create
-        include ApiV1::Action
+        include Api::Action
 
         params do
           required(:tags) { array? { each { str?  }  }  }

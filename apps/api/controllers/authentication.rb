@@ -1,4 +1,4 @@
-module ApiV1
+module Api
   module Authentication
     def self.included(action)
       action.class_eval do
