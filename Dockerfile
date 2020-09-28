@@ -25,10 +25,8 @@ RUN gem install bundler && bundle install --jobs 20 --retry 5
 # Copy the main application.
 COPY . .
 
-# COPY entrypoint.sh /usr/bin/
-# RUN chmod +x /usr/bin/entrypoint.sh
-# ENTRYPOINT ["entrypoint.sh"]
-ENV DB_HOST=db
+# TODO: Remove if things are fine
+# ENV DB_HOST=db
 
 # Expose port 3000 to the Docker host, so we can access it
 # from the outside.
