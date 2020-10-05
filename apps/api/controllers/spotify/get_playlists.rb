@@ -25,6 +25,8 @@ module Api
             if grouped_taggables[p["id"]]
               p[:tags] = grouped_taggables[p["id"]][0].tags
               p[:taggable_id] = grouped_taggables[p["id"]][0].id
+            else
+              p[:tags] = []
             end
           end
 

@@ -17,8 +17,10 @@ module Api
       end
 
       def current_user
+        u = UserRepository.new
         warden = request.env['warden']
         @current_user ||= warden.user
+        @current_user = u.find(@current_user.id)
       end
 
       def spotify_user
