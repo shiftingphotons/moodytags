@@ -25,7 +25,6 @@ module Api
           # Pending solution...
           # For now just get the first 200
           for offset in (0..150).step(50) do
-            # rescue here for 401 by spotify
             playlists.concat @spotify_user.playlists(limit: 50, offset: offset)
           end
 
