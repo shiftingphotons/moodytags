@@ -21,6 +21,12 @@ module Api
           @users.update(current_user.id, tags: tags)
           self.status = 200
         end
+
+        private
+
+        def verify_csrf_token?
+          false
+        end
       end
     end
   end

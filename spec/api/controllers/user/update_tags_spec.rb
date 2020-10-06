@@ -16,7 +16,8 @@ RSpec.describe "API V1 update user tags" do
         {name: "decade", tags: ["80s", "90s"], order: "1"},
       ]}
 
-      put "/api/v1/user/tags", updated_tags
+      header 'Content-Type', 'application/json'
+      put "/api/v1/user/tags", updated_tags.to_json
       expect(last_response.status).to be 200
 
       user_tags = users.find(user.id).tags
@@ -29,7 +30,8 @@ RSpec.describe "API V1 update user tags" do
     it "returns error code when it received strings instead of hashes" do
       bad_tags_paylod = {tags: ["winter", "summer"]}
 
-      put "/api/v1/user/tags", bad_tags_paylod
+      header 'Content-Type', 'application/json'
+      put "/api/v1/user/tags", bad_tags_paylod.to_json
       expect(last_response.status).to be 400
     end
 
@@ -39,7 +41,8 @@ RSpec.describe "API V1 update user tags" do
         {tags: ["80s", "90s"], order: 1},
       ]}
 
-      put "/api/v1/user/tags", bad_tags_paylod
+      header 'Content-Type', 'application/json'
+      put "/api/v1/user/tags", bad_tags_paylod.to_json
       expect(last_response.status).to be 400
     end
 
@@ -49,7 +52,8 @@ RSpec.describe "API V1 update user tags" do
         {name: "", tags: "one", order: "1"},
       ]}
 
-      put "/api/v1/user/tags", bad_tags_paylod
+      header 'Content-Type', 'application/json'
+      put "/api/v1/user/tags", bad_tags_paylod.to_json
       expect(last_response.status).to be 400
     end
   end
