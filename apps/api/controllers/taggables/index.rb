@@ -25,7 +25,11 @@ module Api
           # Pending solution...
           # For now just get the first 200
           for offset in (0..150).step(50) do
-            playlists.concat @spotify_user.playlists(limit: 50, offset: offset)
+            begin
+              playlists.concat @spotify_user.playlists(limit: 50, offset: offset)
+            rescue RestClient::Unauthorized
+              halt 401
+            end
           end
 
           for p in playlists do
