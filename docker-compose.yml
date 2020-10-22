@@ -21,6 +21,7 @@ services:
     build: .
     environment:
       - HANAMI_ENV=test
+      - DB_HOST=db
     command: bundle exec guard -i -p
     volumes:
       - .:/usr/src/app

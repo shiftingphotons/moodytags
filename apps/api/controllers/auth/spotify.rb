@@ -8,6 +8,7 @@ module Api
 
         def initialize
           @users = UserRepository.new
+          @tag_collections = TagCollectionRepository.new
         end
 
         def call(params)
@@ -21,6 +22,7 @@ module Api
               refresh_token: spotify_user.credentials.refresh_token,
               ext_id: spotify_user.id
             )
+            @tag_collections.create(user_id: user.id)
           end
 
           warden.set_user user
