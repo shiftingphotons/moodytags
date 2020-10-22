@@ -12,7 +12,6 @@ module Api
 
         def call(params)
           tags = params.get(:tags)
-          # Cover 404
           if !params.valid?
             self.status = 400
             self.body = params.errors.to_json
