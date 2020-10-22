@@ -8,7 +8,7 @@ RSpec.describe "API V1 update user tags" do
   let!(:tag_collection) { tag_collections.create({user_id: user.id}) }
 
   before(:each) do
-      login_as user
+    login_as user
   end
 
   context 'with valid params' do
