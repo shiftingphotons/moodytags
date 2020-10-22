@@ -3,7 +3,9 @@ RSpec.describe "API V1 update user tags" do
 
   let(:app) { Hanami.app }
   let(:users) { UserRepository.new }
-  let(:user) { users.create({token: "QWE", refresh_token: "RTY", ext_id: "39"}) }
+  let(:tag_collections) { TagCollectionRepository.new }
+  let!(:user) { users.create({token: "QWE", refresh_token: "RTY", ext_id: "39"}) }
+  let!(:tag_collection) { tag_collections.create({user_id: user.id}) }
 
   before(:each) do
     login_as user
@@ -17,10 +19,10 @@ RSpec.describe "API V1 update user tags" do
       ]}
 
       header 'Content-Type', 'application/json'
-      put "/api/v1/user/tags", updated_tags.to_json
+      put "/api/v1/tag_collections", updated_tags.to_json
       expect(last_response.status).to be 200
 
-      user_tags = users.find(user.id).tags
+      user_tags = tag_collections.find_by_user_id(user.id).tags
       user_tags.each { |t| t.transform_keys!(&:to_sym) }
       expect(user_tags).to eq updated_tags[:tags]
     end
@@ -31,7 +33,7 @@ RSpec.describe "API V1 update user tags" do
       bad_tags_paylod = {tags: ["winter", "summer"]}
 
       header 'Content-Type', 'application/json'
-      put "/api/v1/user/tags", bad_tags_paylod.to_json
+      put "/api/v1/tag_collections", bad_tags_paylod.to_json
       expect(last_response.status).to be 400
     end
 
@@ -42,7 +44,7 @@ RSpec.describe "API V1 update user tags" do
       ]}
 
       header 'Content-Type', 'application/json'
-      put "/api/v1/user/tags", bad_tags_paylod.to_json
+      put "/api/v1/tag_collections", bad_tags_paylod.to_json
       expect(last_response.status).to be 400
     end
 
@@ -53,7 +55,7 @@ RSpec.describe "API V1 update user tags" do
       ]}
 
       header 'Content-Type', 'application/json'
-      put "/api/v1/user/tags", bad_tags_paylod.to_json
+      put "/api/v1/tag_collections", bad_tags_paylod.to_json
       expect(last_response.status).to be 400
     end
   end

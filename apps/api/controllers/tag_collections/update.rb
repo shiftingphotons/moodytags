@@ -1,13 +1,13 @@
 module Api
   module Controllers
-    module User
-      class UpdateTags
+    module TagCollections
+      class Update
         include Api::Action
 
-        params Api::Validations::User::UserTagsValidator
+        params Api::Validations::TagCollections::TagCollectionsValidator
 
         def initialize
-          @users = UserRepository.new
+          @tag_collections = TagCollectionRepository.new
         end
 
         def call(params)
@@ -17,8 +17,9 @@ module Api
             self.body = params.errors.to_json
             return
           end
+          tag_collection = @tag_collections.find_by_user_id(current_user.id)
+          @tag_collections.update(tag_collection.id, tags: tags)
 
-          @users.update(current_user.id, tags: tags)
           self.status = 200
         end
 

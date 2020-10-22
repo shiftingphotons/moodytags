@@ -18,7 +18,11 @@ module Api
             .find_by_user_id(current_user.id)
             .group_by {|t| t.ext_id}
 
-          response = @spotify_user.playlists(limit: 50, offset: 50 * page)
+          begin
+            response = @spotify_user.playlists(limit: 50, offset: 50 * page)
+          rescue RestClient::Unauthorized
+            halt 401
+          end
           playlists = JSON.parse(response.body)
 
           for p in playlists["items"] do
