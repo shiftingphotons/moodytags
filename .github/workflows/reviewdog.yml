@@ -23,3 +23,4 @@ jobs:
       with:
         rubocop_extensions: rubocop-performance rubocop-rspec rubocop-sequel
         github_token: ${{ secrets.github_token }}
+        reporter: github-pr-review
