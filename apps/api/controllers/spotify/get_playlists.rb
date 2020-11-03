@@ -21,6 +21,8 @@ module Api
           begin
             response = @spotify_user.playlists(limit: 50, offset: 50 * page)
           rescue RestClient::Unauthorized
+            # There is a uncatched bug here - this could also be because a token needs to be refreshed
+            # OR most probably WAS refreshed but not saved to the db?
             halt 401
           end
           playlists = JSON.parse(response.body)
