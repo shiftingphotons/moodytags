@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module Controllers
     module TagCollections
@@ -12,7 +14,7 @@ module Api
 
         def call(params)
           tags = params.get(:tags)
-          if !params.valid?
+          unless params.valid?
             self.status = 400
             self.body = params.errors.to_json
             return

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspotify'
 
 module Api
@@ -11,12 +13,12 @@ module Api
           @tag_collections = TagCollectionRepository.new
         end
 
-        def call(params)
+        def call
           warden = request.env['warden']
           spotify_user = RSpotify::User.new(request.env['omniauth.auth'])
 
           user = @users.find_by_ext_id(spotify_user.id)
-          if !user
+          unless user
             user = @users.create(
               token: spotify_user.credentials.token,
               refresh_token: spotify_user.credentials.refresh_token,
@@ -27,13 +29,12 @@ module Api
 
           warden.set_user user
 
-          redirect_to "http://localhost:8080/app"
+          redirect_to 'http://localhost:8080/app'
         end
 
         private
-        def authenticate!
 
-        end
+        def authenticate!; end
       end
     end
   end
