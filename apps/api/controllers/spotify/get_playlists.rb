@@ -18,9 +18,8 @@ module Api
             playlist[:tags] = []
             next unless @taggables.include? playlist['id']
 
-            byebug
             taggable = @taggables[playlist['id']].first
-            playlist[:tags] << taggable.tags
+            playlist[:tags] += taggable.tags
             playlist[:taggable_id] = taggable.id
           end
 
