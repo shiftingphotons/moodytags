@@ -24,3 +24,9 @@ jobs:
         rubocop_extensions: rubocop-performance rubocop-rspec rubocop-sequel
         github_token: ${{ secrets.github_token }}
         reporter: github-pr-review
+
+    - name: reek
+      uses: reviewdog/action-reek@v1
+      with:
+        github_token: ${{ secrets.github_token }}
+        reporter: github-pr-review
