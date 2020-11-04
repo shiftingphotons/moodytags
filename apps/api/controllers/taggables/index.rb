@@ -8,6 +8,10 @@ module Api
     module Taggables
       class Index
         include Api::Action
+        # TODO: Most of the logic here is identical to that of another endpoint
+        # unify them into single class?
+
+        before :set_taggables, :fetch_playlists
 
         def initialize
           @playlists = []
@@ -15,16 +19,18 @@ module Api
         end
 
         def call(_)
-          # Probably needs extracting as this logic is used on another place too
-          group_taggables
-          fetch_playlists
-          build_sections
+          @playlists.each do |playlist|
+            next unless @taggables[playlist.id]
+
+            taggable = @taggables[playlist.id].first
+            update_tag_section(taggable, playlist)
+          end
           self.body = @sections.to_json
         end
 
         private
 
-        def group_taggables
+        def set_taggables
           @taggables = TaggableRepository.new
                                          .find_by_user_id(current_user.id)
                                          .group_by(&:ext_id)
@@ -45,31 +51,20 @@ module Api
           end
         end
 
-        def build_sections
-          @playlists.each do |playlist|
-            next unless @taggables[playlist.id]
-
-            taggable = @taggables[playlist.id].first
-            playlist_hash = unified_hash playlist, taggable
-
-            taggable.tags.each do |tag|
-              if @sections[tag]
-                @sections[tag] << playlist_hash
-              else
-                @sections[tag] = [playlist_hash]
-              end
-            end
-          end
-        end
-
-        def unified_hash(playlist, taggable)
-          {
-            id: taggable.id,
-            ext_id: playlist.id,
-            name: playlist.name,
-            images: playlist.images,
+        def update_tag_section(taggable, playlist)
+          tagged_playlist = {
+            id: taggable.id, ext_id: playlist.id,
+            name: playlist.name, images: playlist.images,
             uri: playlist.uri
           }
+
+          taggable.tags.each do |tag|
+            if @sections.include? tag
+              @sections[tag] << tagged_playlist
+            else
+              @sections[tag] = [tagged_playlist]
+            end
+          end
         end
 
         def verify_csrf_token?

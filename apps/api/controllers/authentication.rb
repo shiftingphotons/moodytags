@@ -4,14 +4,14 @@ module Api
   module Authentication
     def self.included(action)
       action.class_eval do
-        before :authenticate!
+        before :authenticate
         expose :current_user, :spotify_user
       end
     end
 
     private
 
-    def authenticate!
+    def authenticate
       halt 401 unless authenticated?
     end
 

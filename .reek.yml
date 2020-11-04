@@ -1,0 +1,16 @@
+detectors:
+  # You can disable smells completely
+  IrresponsibleModule:
+    enabled: false
+  DuplicateMethodCall:
+    max_calls: 2
+  InstanceVariableAssumption:
+    enabled: false
+  TooManyStatements:
+    enabled: true
+    exclude:
+      - initialize
+    max_statements: 10
+  FeatureEnvy:
+    exclude:
+      - "Api::Controllers::Taggables::Index#update_section"

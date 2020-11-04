@@ -6,56 +6,54 @@ module Api
       class GetPlaylists
         include Api::Action
 
+        before :set_page, :set_taggables, :set_playlists
+
         def initialize
           RSpotify.raw_response = true
+          @page = 0
         end
 
-        def call(params)
-          page = page_param(params)
-          @playlists = fetch_playlists page
+        def call(_)
+          @playlists.each do |playlist|
+            playlist[:tags] = []
+            next unless @taggables.include? playlist['id']
 
-          group_taggables
-          assign_playlist_tags
-          self.body = { items: @playlists['items'], total: @playlists['total'] }.to_json
+            byebug
+            taggable = @taggables[playlist['id']].first
+            playlist[:tags] << taggable.tags
+            playlist[:taggable_id] = taggable.id
+          end
+
+          self.body = { items: @playlists, total: @playlist_count }.to_json
         end
 
         private
 
-        def group_taggables
+        def set_taggables
           @taggables = TaggableRepository.new
                                          .find_by_user_id(current_user.id)
                                          .group_by(&:ext_id)
         end
 
-        def page_param(params)
-          return 0 unless params[:page]
+        def set_page
+          page_param = params[:page]&.to_i
+          return unless page_param
 
-          page = params[:page]&.to_i
-          return page - 1 if page&.positive?
+          @page = page_param - 1 if page_param.positive?
         end
 
-        def fetch_playlists(page)
+        def set_playlists
           begin
-            response = @spotify_user.playlists(limit: 50, offset: 50 * page)
+            response = @spotify_user.playlists(limit: 50, offset: 50 * @page)
           rescue RestClient::Unauthorized
             # There is a uncatched bug here - this could also be because a token needs to be refreshed
             # OR most probably WAS refreshed but not saved to the db?
             halt 401
           end
 
-          JSON.parse(response.body)
-        end
-
-        def assign_playlist_tags
-          @playlists['items'].each do |p|
-            p_id = p['id']
-            p[:tags] = []
-
-            next unless @taggables.include? p_id
-
-            p[:tags] << @taggables[p_id].first.tags
-            p[:taggable_id] = @taggables[p_id].first.id
-          end
+          json_body = JSON.parse(response.body)
+          @playlists = json_body.fetch('items')
+          @playlist_count = json_body.fetch('total')
         end
       end
     end

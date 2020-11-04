@@ -14,8 +14,10 @@ module Api
         end
 
         def call(_)
-          @spotify_user = RSpotify::User.new(request.env['omniauth.auth'])
-          warden = request.env['warden']
+          env = request.env
+          @spotify_user = RSpotify::User.new(env['omniauth.auth'])
+          warden = env['warden']
+
           warden.set_user find_or_create_user
           redirect_to 'http://localhost:8080/app'
         end
@@ -24,7 +26,7 @@ module Api
 
         def find_or_create_user
           user = @users_repo.find_by_ext_id(@spotify_user.id)
-          return user unless user.nil?
+          return user if user
 
           create_user
         end
@@ -39,7 +41,7 @@ module Api
           created_user
         end
 
-        def authenticate!; end
+        def authenticate; end
       end
     end
   end
