@@ -6,6 +6,8 @@ module Api
       class Create
         include Api::Action
 
+        before :validate
+
         params do
           required(:tags) { array? { each { str? } } }
         end
@@ -15,14 +17,13 @@ module Api
         end
 
         def call(params)
-          validate params
           @taggables_repo.create(tags: params[:tags], ext_id: params[:ext_id], user_id: current_user.id)
           status 201, []
         end
 
         private
 
-        def validate(params)
+        def validate
           halt 400, params.errors.to_json unless params.valid?
         end
 

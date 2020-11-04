@@ -6,6 +6,8 @@ module Api
       class Update
         include Api::Action
 
+        before :validate
+
         params do
           required(:tags) { array? { each { str? } } }
         end
@@ -15,10 +17,8 @@ module Api
         end
 
         def call(params)
-          validate params
-
           taggable = @taggables_repo.find(params[:id])
-          halt 404 if taggable.nil?
+          halt 404 unless taggable
 
           updated_taggable = @taggables_repo.update(taggable.id, { tags: params.get(:tags) })
           self.body = JSON.generate(updated_taggable.to_h)
@@ -26,7 +26,7 @@ module Api
 
         private
 
-        def validate(params)
+        def validate
           halt 400, params.errors.to_json unless params.valid?
         end
 
