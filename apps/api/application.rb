@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'hanami/helpers'
 require 'omniauth'
 require 'rspotify/oauth'
@@ -21,10 +23,7 @@ module Api
       #
       # When you add new directories, remember to add them here.
       #
-      load_paths << [
-        'validations',
-        'controllers'
-      ]
+      load_paths << %w[validations controllers]
 
       # Handle exceptions with HTTP statuses (true) or don't catch them (false).
       # Defaults to true.
@@ -94,10 +93,7 @@ module Api
       middleware.use Rack::Cors do
         allow do
           origins 'http://localhost:8080'
-          resource '*',
-            headers: :any,
-            methods: [:get, :post, :patch, :put],
-            credentials: true
+          resource '*', headers: :any, methods: %i[get post patch put], credentials: true
         end
       end
 
@@ -107,7 +103,11 @@ module Api
       end
 
       middleware.use OmniAuth::Builder do
-        provider :spotify, ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_CLIENT_SECRET'], scope: 'user-library-read playlist-read-collaborative playlist-modify-private playlist-modify-public playlist-read-private'
+        provider :spotify,
+                 ENV['SPOTIFY_CLIENT_ID'],
+                 ENV['SPOTIFY_CLIENT_SECRET'],
+                 scope: 'user-library-read playlist-read-collaborative
+                         playlist-modify-private playlist-modify-public playlist-read-private'
       end
 
       # Default format for the requests that don't specify an HTTP_ACCEPT header
@@ -193,7 +193,7 @@ module Api
       #
       #  * https://developer.mozilla.org/en-US/docs/Web/Security/CSP/CSP_policy_directives
       #
-      security.content_security_policy %{
+      security.content_security_policy %(
         form-action 'self';
         frame-ancestors 'self';
         base-uri 'self';
@@ -208,7 +208,7 @@ module Api
         child-src 'self';
         frame-src 'self';
         media-src 'self'
-      }
+      )
 
       ##
       # FRAMEWORKS

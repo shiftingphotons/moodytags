@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module Controllers
     module TagCollections
@@ -5,11 +7,11 @@ module Api
         include Api::Action
 
         def initialize
-          @tag_collections = TagCollectionRepository.new
+          @tag_collections_repo = TagCollectionRepository.new
         end
 
-        def call(params)
-          tag_collection = @tag_collections.find_by_user_id(current_user.id)
+        def call(_)
+          tag_collection = @tag_collections_repo.find_by_user_id(current_user.id)
           self.body = tag_collection.tags.to_json
         end
       end

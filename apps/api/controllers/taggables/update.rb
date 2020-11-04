@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module Controllers
     module Taggables
@@ -5,23 +7,27 @@ module Api
         include Api::Action
 
         params do
-          required(:tags) { array? { each { str?  }  }  }
+          required(:tags) { array? { each { str? } } }
         end
 
-        def initialize()
-          @repository = TaggableRepository.new
+        def initialize
+          @taggables_repo = TaggableRepository.new
         end
 
         def call(params)
-          halt 400 unless params.valid?
+          validate params
 
-          taggable = @repository.find(params[:id])
-          if taggable.nil?
-            halt 404
-          end
+          taggable = @taggables_repo.find(params[:id])
+          halt 404 if taggable.nil?
 
-          updated_taggable = @repository.update(taggable.id, {tags: params.get(:tags)})
+          updated_taggable = @taggables_repo.update(taggable.id, { tags: params.get(:tags) })
           self.body = JSON.generate(updated_taggable.to_h)
+        end
+
+        private
+
+        def validate(params)
+          halt 400, params.errors.to_json unless params.valid?
         end
 
         def verify_csrf_token?

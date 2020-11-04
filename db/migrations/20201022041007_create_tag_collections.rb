@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 Hanami::Model.migration do
   default_tags = [{
-    name: "Times of day",
+    name: 'Times of day',
     order: 0,
-    tags: ["Morning", "Noon", "Night"]
+    tags: %w[Morning Noon Night]
   }, {
-    name: "Mood",
+    name: 'Mood',
     order: 1,
-    tags: ["Lazy", "Inspired"]
+    tags: %w[Lazy Inspired]
   }]
   default_tags_json = JSON.dump(default_tags)
   change do

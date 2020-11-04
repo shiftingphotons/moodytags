@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
 require 'hanami/setup'
 require 'hanami/model'
-require "hanami/middleware/body_parser"
+require 'hanami/middleware/body_parser'
 require_relative '../lib/moody_tags'
 require_relative '../apps/api/application'
 

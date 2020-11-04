@@ -1,4 +1,6 @@
-RSpec.describe "API V1 taggables" do
+# frozen_string_literal: true
+
+RSpec.describe 'API V1 taggables' do
   include Rack::Test::Methods
 
   # # app is required by Rack::Test
