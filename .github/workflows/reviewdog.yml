@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  rubocop:
+  analyze:
 
     runs-on: ubuntu-latest
 
