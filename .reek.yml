@@ -13,4 +13,4 @@ detectors:
     max_statements: 10
   FeatureEnvy:
     exclude:
-      - "Api::Controllers::Taggables::Index#update_section"
+      - "Api::Controllers::Taggables::Index#update_tag_section"
