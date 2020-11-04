@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# test reviewdog report
 
 module Api
   module Controllers
@@ -10,36 +9,52 @@ module Api
         def initialize
           RSpotify.raw_response = true
           @taggables = TaggableRepository.new
+          @grouped_taggables = []
         end
 
         def call(params)
-          page = 0
-          if params[:page] && params[:page].to_i > 0
-            page = params[:page].to_i - 1
-          end
-          grouped_taggables = @taggables
-            .find_by_user_id(current_user.id)
-            .group_by {|t| t.ext_id}
+          @page = page(params)
+          fetch_playlists
 
+          @grouped_taggables << @taggables
+                                .find_by_user_id(current_user.id)
+                                .group_by(&:ext_id)
+
+          set_taggables
+          self.body = { items: @playlists['items'], total: @playlists['total'] }.to_json
+        end
+
+        private
+
+        def page(params)
+          return 0 unless params[:page]
+
+          page = params[:page]&.to_i
+          return page - 1 if page&.positive?
+        end
+
+        def set_taggables
+          @playlists['items'].each do |p|
+            p_id = p['id']
+            p[:tags] = []
+
+            next unless @grouped_taggables.include? p_id
+
+            p[:tags] << @grouped_taggables[p_id].first.tags
+            p[:taggable_id] = @grouped_taggables[p_id].first.id
+          end
+        end
+
+        def fetch_playlists
           begin
-            response = @spotify_user.playlists(limit: 50, offset: 50 * page)
+            response = @spotify_user.playlists(limit: 50, offset: 50 * @page)
           rescue RestClient::Unauthorized
             # There is a uncatched bug here - this could also be because a token needs to be refreshed
             # OR most probably WAS refreshed but not saved to the db?
             halt 401
           end
-          playlists = JSON.parse(response.body)
 
-          for p in playlists["items"] do
-            if grouped_taggables[p["id"]]
-              p[:tags] = grouped_taggables[p["id"]][0].tags
-              p[:taggable_id] = grouped_taggables[p["id"]][0].id
-            else
-              p[:tags] = []
-            end
-          end
-
-          self.body = {items: playlists["items"], total: playlists["total"]}.to_json
+          @playlists = JSON.parse(response.body)
         end
       end
     end

@@ -1,2 +1,8 @@
+AllCops:
+  NewCops: enable
 Style/Documentation:
-    Enabled: false
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/MethodLength:
+  Max: 20

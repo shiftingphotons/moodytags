@@ -8,7 +8,7 @@ module Api
 
         predicate :tag_keys?, message: 'must have a name, tags and order' do |tag_obj|
           keys = tag_obj.keys
-          keys.length == 3 && [:name, :tags, :order].all? { |s| keys.include? s }
+          keys.length == 3 && %i[name tags order].all? { |s| keys.include? s }
         end
 
         predicate :name_str?, message: 'name must be string' do |tag_obj|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Api.routes do
   it 'recognizes "GET /ping"' do
     env   = Rack::MockRequest.env_for('/ping')

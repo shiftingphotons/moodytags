@@ -9,30 +9,32 @@ module Api
         include Api::Action
 
         def initialize
+          @warden = request.env['warden']
           @users = UserRepository.new
           @tag_collections = TagCollectionRepository.new
+
+          @spotify_user = RSpotify::User.new(request.env['omniauth.auth'])
         end
 
-        def call
-          warden = request.env['warden']
-          spotify_user = RSpotify::User.new(request.env['omniauth.auth'])
-
-          user = @users.find_by_ext_id(spotify_user.id)
-          unless user
-            user = @users.create(
-              token: spotify_user.credentials.token,
-              refresh_token: spotify_user.credentials.refresh_token,
-              ext_id: spotify_user.id
-            )
-            @tag_collections.create(user_id: user.id)
-          end
-
-          warden.set_user user
-
+        def call(_)
+          set_or_create_user
+          @warden.set_user @user
           redirect_to 'http://localhost:8080/app'
         end
 
         private
+
+        def set_or_create_user
+          @user = @users.find_by_ext_id(spotify_user.id)
+          return unless @user
+
+          @user = @users.create(
+            token: spotify_user.credentials.token,
+            refresh_token: spotify_user.credentials.refresh_token,
+            ext_id: spotify_user.id
+          )
+          @tag_collections.create(user_id: @user.id)
+        end
 
         def authenticate!; end
       end
