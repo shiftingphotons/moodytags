@@ -11,17 +11,20 @@ module Api
         end
 
         def initialize
-          @taggables = TaggableRepository.new
+          @taggables_repo = TaggableRepository.new
         end
 
         def call(params)
-          halt 400 unless params.valid?
-
-          @taggables.create(tags: params[:tags], ext_id: params[:ext_id], user_id: current_user.id)
+          validate params
+          @taggables_repo.create(tags: params[:tags], ext_id: params[:ext_id], user_id: current_user.id)
           status 201, []
         end
 
         private
+
+        def validate(params)
+          halt 400, params.errors.to_json unless params.valid?
+        end
 
         def verify_csrf_token?
           false
