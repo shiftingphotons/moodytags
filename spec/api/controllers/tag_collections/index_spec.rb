@@ -5,9 +5,9 @@ RSpec.describe 'API V1 get user tags' do
 
   let(:app) { Hanami.app }
   let(:users) { UserRepository.new }
-  let(:tag_collections) { TagCollectionRepository.new }
+  let(:tag_collections_repo) { TagCollectionRepository.new }
   let(:user) { users.create({ token: 'QWE', refresh_token: 'RTY', ext_id: '39' }) }
-  let!(:tag_collection) { tag_collections.create({ user_id: user.id }) }
+  let!(:tag_collection) { tag_collections_repo.create({ user_id: user.id }) }
 
   before(:each) do
     login_as user

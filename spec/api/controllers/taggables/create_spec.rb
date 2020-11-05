@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'API V1 update taggable' do
+RSpec.describe 'API V1 create taggable' do
   include Rack::Test::Methods
 
   let(:app) { Hanami.app }
