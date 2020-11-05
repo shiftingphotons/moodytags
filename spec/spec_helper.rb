@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'webmock/rspec'
+
 # Require this file for unit tests
 ENV['HANAMI_ENV'] ||= 'test'
 
@@ -27,6 +29,101 @@ Hanami::Utils.require!("#{__dir__}/support")
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   include Warden::Test::Helpers
+
+  config.before(:all) do
+    original_response = {
+      "href": 'https://api.spotify.com/v1/users/39/playlists?limit=50&offset=0',
+      "items": [
+        {
+          "collaborative": false,
+          "description": '',
+          "external_urls": {
+            "spotify": 'https://open.spotify.com/playlist/5B44sIZGyatbMPvogHOUUr'
+          },
+          "href": 'https://api.spotify.com/v1/playlists/5B44sIZGyatbMPvogHOUUr',
+          "id": '5B44sIZGyatbMPvogHOUUr',
+          "images": [
+            {
+              "height": 640,
+              "url": 'https://i.scdn.co/image/ab67616d0000b2739d45a127005f8a96652280bd',
+              "width": 640
+            }
+          ],
+          "name": 'chillride?',
+          "owner": {
+            "display_name": 'Dimitar Ralev',
+            "external_urls": {
+              "spotify": 'https://open.spotify.com/user/dmralev'
+            },
+            "href": 'https://api.spotify.com/v1/users/dmralev',
+            "id": 'dmralev',
+            "type": 'user',
+            "uri": 'spotify:user:dmralev'
+          },
+          "primary_color": 'null',
+          "public": true,
+          "snapshot_id": 'NCw5Y2NhY2YyOGY1MzI4NWM5YzlkNGI2Y2NhNjNmZGNjMWNiN2MyYzA0',
+          "tracks": {
+            "href": 'https://api.spotify.com/v1/playlists/5B44sIZGyatbMPvogHOUUr/tracks',
+            "total": 19
+          },
+          "type": 'playlist',
+          "uri": 'spotify:playlist:5B44sIZGyatbMPvogHOUUr'
+        },
+        {
+          "collaborative": false,
+          "description": 'add stuff from crumb etc',
+          "external_urls": {
+            "spotify": 'https://open.spotify.com/playlist/67yift3qAWE0DtAbuMF6mU'
+          },
+          "href": 'https://api.spotify.com/v1/playlists/67yift3qAWE0DtAbuMF6mU',
+          "id": '67yift3qAWE0DtAbuMF6mU',
+          "images": [
+            {
+              "height": 640,
+              "url": 'https://i.scdn.co/image/ab67616d0000b273b8cca972978cb4f2f7be74ad',
+              "width": 640
+            }
+          ],
+          "name": 'dreamy',
+          "owner": {
+            "display_name": 'Dimitar Ralev',
+            "external_urls": {
+              "spotify": 'https://open.spotify.com/user/dmralev'
+            },
+            "href": 'https://api.spotify.com/v1/users/dmralev',
+            "id": 'dmralev',
+            "type": 'user',
+            "uri": 'spotify:user:dmralev'
+          },
+          "primary_color": 'null',
+          "public": true,
+          "snapshot_id": 'Myw4ZWQ4Mzk0YTIwMzZmNTYwZjIxN2JiNGJmNGI1YmQ5MzI1ZjhkMDRi',
+          "tracks": {
+            "href": 'https://api.spotify.com/v1/playlists/67yift3qAWE0DtAbuMF6mU/tracks',
+            "total": 1
+          },
+          "type": 'playlist',
+          "uri": 'spotify:playlist:67yift3qAWE0DtAbuMF6mU'
+        }
+      ],
+      "limit": 50,
+      "next": 'https://api.spotify.com/v1/users/dmralev/playlists?offset=50&limit=50',
+      "offset": 1,
+      "previous": 'https://api.spotify.com/v1/users/dmralev/playlists?offset=0&limit=0',
+      "total": 2
+    }
+
+    stub_request(:get, %r{^https://api.spotify.com/v1/users/39/playlists*})
+      .with(headers: {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip, deflate',
+              'Authorization' => 'Bearer QWE',
+              'Content-Type' => 'application/json',
+              'Host' => 'api.spotify.com',
+              'User-Agent' => 'rest-client/2.0.2 (linux-gnu x86_64) ruby/2.6.6p146'
+        }).to_return(status: 200, body: JSON.generate(original_response), headers: {})
+  end
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
