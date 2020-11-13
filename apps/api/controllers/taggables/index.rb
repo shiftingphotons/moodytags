@@ -14,15 +14,16 @@ module Api
         before :set_taggables, :fetch_playlists
 
         def initialize
+          RSpotify.raw_response = true
           @playlists = []
           @sections = {}
         end
 
         def call(_)
           @playlists.each do |playlist|
-            next unless @taggables[playlist.id]
+            next unless @taggables[playlist['id']]
 
-            taggable = @taggables[playlist.id].first
+            taggable = @taggables[playlist['id']].first
             update_tag_section(taggable, playlist)
           end
           self.body = @sections.to_json
@@ -44,18 +45,20 @@ module Api
           # For now just get the first 200
           (0..150).step(50) do |offset|
             begin
-              @playlists.concat @spotify_user.playlists(limit: 50, offset: offset)
+              response = JSON.parse(@spotify_user.playlists(limit: 50, offset: offset))
             rescue RestClient::Unauthorized
               halt 401
             end
+            @playlists.concat response['items']
+            break if response['total'] < offset + 50
           end
         end
 
         def update_tag_section(taggable, playlist)
           tagged_playlist = {
-            id: taggable.id, ext_id: playlist.id,
-            name: playlist.name, images: playlist.images,
-            uri: playlist.uri
+            id: taggable.id, ext_id: playlist['id'],
+            name: playlist['name'], images: playlist['images'],
+            uri: playlist['uri']
           }
 
           taggable.tags.each do |tag|

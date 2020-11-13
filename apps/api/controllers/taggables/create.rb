@@ -10,6 +10,7 @@ module Api
 
         params do
           required(:tags) { array? { each { str? } } }
+          required(:ext_id) { filled? }
         end
 
         def initialize
@@ -17,8 +18,9 @@ module Api
         end
 
         def call(params)
-          @taggables_repo.create(tags: params[:tags], ext_id: params[:ext_id], user_id: current_user.id)
-          status 201, []
+          taggable = @taggables_repo.create(tags: params[:tags], ext_id: params[:ext_id], user_id: current_user.id)
+          self.body = taggable.to_h.to_json
+          self.status = 201
         end
 
         private
