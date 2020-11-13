@@ -19,7 +19,6 @@ module Api
 
         def call(params)
           taggable = @taggables_repo.create(tags: params[:tags], ext_id: params[:ext_id], user_id: current_user.id)
-          byebug
           self.body = taggable.to_h.to_json
           self.status = 201
         end

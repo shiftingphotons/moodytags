@@ -21,8 +21,8 @@ end
 
 group :test, :development do
   gem 'byebug'
-  gem "webmock"
   gem 'dotenv', '~> 2.4'
+  gem 'webmock'
 end
 
 group :test do

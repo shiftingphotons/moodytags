@@ -122,7 +122,7 @@ RSpec.configure do |config|
               'Content-Type' => 'application/json',
               'Host' => 'api.spotify.com',
               'User-Agent' => 'rest-client/2.0.2 (linux-gnu x86_64) ruby/2.6.6p146'
-        }).to_return(status: 200, body: JSON.generate(original_response), headers: {})
+            }).to_return(status: 200, body: JSON.generate(original_response), headers: {})
   end
 
   # rspec-expectations config goes here. You can use an alternate
