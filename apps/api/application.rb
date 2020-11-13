@@ -43,12 +43,12 @@ module Api
       # URI scheme used by the routing system to generate absolute URLs
       # Defaults to "http"
       #
-      # scheme 'https'
+      scheme 'https'
 
       # URI host used by the routing system to generate absolute URLs
       # Defaults to "localhost"
       #
-      # host 'example.org'
+      host 'moodytags.shifting-photons.dev'
 
       # URI port used by the routing system to generate absolute URLs
       # Argument: An object coercible to integer, defaults to 80 if the scheme
@@ -92,7 +92,7 @@ module Api
 
       middleware.use Rack::Cors do
         allow do
-          origins 'http://localhost:8080'
+          origins 'https://moodytags.shifting-photons.dev'
           resource '*', headers: :any, methods: %i[get post patch put], credentials: true
         end
       end
