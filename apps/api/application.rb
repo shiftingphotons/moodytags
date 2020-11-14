@@ -243,9 +243,9 @@ module Api
     # PRODUCTION
     #
     configure :production do
-      # scheme 'https'
-      # host   'example.org'
-      # port   443
+      scheme 'https'
+      host   'moodytags.shifting-photons.dev'
+      port   443
     end
   end
 end
