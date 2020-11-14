@@ -19,7 +19,7 @@ module Api
           warden = env['warden']
 
           warden.set_user find_or_create_user
-          redirect_to request.env.host'/app'
+          redirect_to '/app'
         end
 
         private
