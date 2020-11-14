@@ -4,7 +4,6 @@ require 'hanami/helpers'
 require 'omniauth'
 require 'rspotify/oauth'
 require_relative './controllers/authentication'
-Dotenv.load('.env.spotify')
 
 module Api
   class Application < Hanami::Application
