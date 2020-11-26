@@ -1,4 +1,17 @@
 version: "3.8"
+
+volumes:
+  dist:
+
+networks:
+  net:
+
+secrets:
+  env.production:
+    external: true
+  env.spotify:
+    external: true
+
 services:
   api:
     image: shiftingphotons/moodytags:latest
@@ -30,15 +43,3 @@ services:
       - ./.env.production
     networks:
       - "net"
-
-volumes:
-  dist:
-
-networks:
-  net:
-
-secrets:
-  env.production:
-    external: true
-  env.spotify:
-    external: true
