@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  api:
+    image: shiftingphotons/moodytags:latest
+    command: bundle exec hanami server --host=0.0.0.0 --port=8000
+    deploy:
+      replicas: 2
+    environment:
+      HANAMI_ENV: production
+    secrets:
+      - source: env.production
+        target: /usr/src/app/.env.production
+      - source: env.spotify
+        target: /usr/src/app/.env.spotify
+    networks:
+      - "net"
+  app:
+    image: shiftingphotons/moodytags-client:latest
+    deploy:
+      replicas: 1
+    networks:
+      - "net"
+    volumes:
+      - dist:/app/dist
+  db:
+    image: postgres:12
+    deploy:
+      replicas: 1
+    env_file:
+      - ./.env.production
+    networks:
+      - "net"
+
+volumes:
+  dist:
+
+networks:
+  net:
+
+secrets:
+  env.production:
+    external: true
+  env.spotify:
+    external: true
