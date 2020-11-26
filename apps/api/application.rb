@@ -4,7 +4,6 @@ require 'hanami/helpers'
 require 'omniauth'
 require 'rspotify/oauth'
 require_relative './controllers/authentication'
-Dotenv.load('.env.spotify')
 
 module Api
   class Application < Hanami::Application
@@ -43,12 +42,12 @@ module Api
       # URI scheme used by the routing system to generate absolute URLs
       # Defaults to "http"
       #
-      # scheme 'https'
+      scheme 'https'
 
       # URI host used by the routing system to generate absolute URLs
       # Defaults to "localhost"
       #
-      # host 'example.org'
+      host ENV['HOST']
 
       # URI port used by the routing system to generate absolute URLs
       # Argument: An object coercible to integer, defaults to 80 if the scheme
@@ -92,7 +91,7 @@ module Api
 
       middleware.use Rack::Cors do
         allow do
-          origins 'http://localhost:8080'
+          origins "https://#{ENV['HOST']}"
           resource '*', headers: :any, methods: %i[get post patch put], credentials: true
         end
       end
@@ -243,9 +242,9 @@ module Api
     # PRODUCTION
     #
     configure :production do
-      # scheme 'https'
-      # host   'example.org'
-      # port   443
+      scheme 'https'
+      host   ENV['HOST']
+      port   443
     end
   end
 end

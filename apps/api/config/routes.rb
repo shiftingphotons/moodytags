@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-get '/ping', to: -> { [200, {}, ['pong']] }
+get '/ping', to: ->(env) { [200, {}, ['pong']] }
 
 # V1
 get '/api/v1/tag_collections', to: 'tag_collections#index'
