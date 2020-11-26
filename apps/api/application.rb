@@ -47,7 +47,7 @@ module Api
       # URI host used by the routing system to generate absolute URLs
       # Defaults to "localhost"
       #
-      host 'moodytags.shifting-photons.dev'
+      host ENV['HOST']
 
       # URI port used by the routing system to generate absolute URLs
       # Argument: An object coercible to integer, defaults to 80 if the scheme
@@ -91,7 +91,7 @@ module Api
 
       middleware.use Rack::Cors do
         allow do
-          origins 'https://moodytags.shifting-photons.dev'
+          origins "https://#{ENV['HOST']}"
           resource '*', headers: :any, methods: %i[get post patch put], credentials: true
         end
       end
@@ -243,7 +243,7 @@ module Api
     #
     configure :production do
       scheme 'https'
-      host   'moodytags.shifting-photons.dev'
+      host   ENV['HOST']
       port   443
     end
   end
