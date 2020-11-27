@@ -42,7 +42,7 @@ module Api
       # URI scheme used by the routing system to generate absolute URLs
       # Defaults to "http"
       #
-      scheme 'https'
+      scheme 'https' if ENV['HOST'] == 'production'
 
       # URI host used by the routing system to generate absolute URLs
       # Defaults to "localhost"
@@ -91,7 +91,7 @@ module Api
 
       middleware.use Rack::Cors do
         allow do
-          origins "https://#{ENV['HOST']}"
+          origins "http://#{ENV['HOST']}"
           resource '*', headers: :any, methods: %i[get post patch put], credentials: true
         end
       end

@@ -25,8 +25,9 @@ RUN gem install bundler && bundle install --jobs 20 --retry 5
 # Copy the main application.
 COPY . .
 
-# TODO: Remove if things are fine
-# ENV DB_HOST=db
+# Set env variable so GitHub action can run tests against real database
+# but still be able to reuse the container for running them locally
+ENV DB_HOST=db
 
 # Expose port 3000 to the Docker host, so we can access it
 # from the outside.
