@@ -3,6 +3,7 @@
 .env.local
 .env.*.local
 .env.spotify
+.env.production
 
 *.swp
 *.swa

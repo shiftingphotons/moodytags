@@ -90,6 +90,17 @@ module Api
       #
 
       middleware.use Rack::Cors do
+        if ENV['HANAMI_ENV'] == 'development'
+          allow do
+            origins "http://#{ENV['HOST']}"
+            resource '*', headers: :any, methods: %i[get post patch put], credentials: true
+          end
+          allow do
+            origins "http://#{ENV['HOST']}:8080"
+            resource '*', headers: :any, methods: %i[get post patch put], credentials: true
+          end
+        end
+
         allow do
           origins "http://#{ENV['HOST']}"
           resource '*', headers: :any, methods: %i[get post patch put], credentials: true
