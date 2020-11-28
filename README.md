@@ -1,6 +1,14 @@
-# Moody Tags
+<p align="center">
+  <a href="https://moodytags.shiftingphotons.dev"><img src="public/gh_logo.png" width="300"/></a>
+</p>
 
-Welcome to your new Hanami project!
+---  
+
+<p align="center">
+  <strong>Tag your playlist collection</strong></br>
+  Moodytags is trying to help you sort your collection of playlists better.</br>Providing a possible answer to the <strong>"What should I listen to now?"</strong> question.</br>
+  <img src="https://img.shields.io/badge/version-0.3.0-brightgreen" align="center"/></br>
+</p>
 
 ## Setup
 
