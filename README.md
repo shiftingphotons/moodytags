@@ -43,11 +43,11 @@ SPOTIFY_CLIENT_SECRET=YOUR_CLIENT_SECRET
 
 ### Setup
 
-Running the whole application is done through [docker-compose](https://docs.docker.com/compose/).  
+Running the whole application is done through [docker-compose](https://docs.docker.com/compose/):  
 ```
 docker-compose up
 ```
-Setup the development database.
+Setup the development database:
 ```
 docker-compose exec api bundle exec hanami db prepare
 ```
