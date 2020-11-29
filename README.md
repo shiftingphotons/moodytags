@@ -53,9 +53,7 @@ docker-compose exec api bundle exec hanami db prepare
 ```
 Everything should be working. By default the application should be found on [localhost](http://localhost)
 
-### Run tests
-
-How to run tests:
+### Running the tests
 
 First prepare the testing database:
 ```
