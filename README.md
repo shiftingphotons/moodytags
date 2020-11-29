@@ -11,32 +11,57 @@
   <img src="https://img.shields.io/github/workflow/status/shiftingphotons/moodytags/Spec"/></br>
 </p>
 
-## Setup
+## Features
+- Authenticate and fetch playlists with Spotify
+- Create collection of tags for easier use
+- Tag playlists
+- Basic dashboard showing your tagged playlists
+
+## Roadmap
+- Ability to tag albums and songs
+- Integration with another streaming service
+  
+  
+## How To Use
+### Run It Locally
+While the hosted version can be found [here](https://moodytags.shiftingphotons.dev), moodytags can be run locally.  
+
+#### Prerequisites
+Spotify is the only integration for now, so you must be user of the platform. For the integration to work, you also must have a developer application on [their platform](https://developer.spotify.com/dashboard/).  
+
+While creating an application, you'll be asked for a scope. A recommended application scope for now is:  
+```
+user-library-read playlist-read-collaborative playlist-read-private
+```  
+
+The final requirement is to place your Spotify client id and client secret in `.env.spotify` file at the root of the project so they can be read on application start.
+```
+SPOTIFY_CLIENT_ID=YOUR_CLIENT_ID
+SPOTIFY_CLIENT_SECRET=YOUR_CLIENT_SECRET
+```
+
+
+### Setup
+
+Running the whole application is done through [docker-compose](https://docs.docker.com/compose/).  
+```
+docker-compose up
+```
+Setup the development database.
+```
+docker-compose exec api bundle exec hanami db prepare
+```
+Everything should be working. By default the application should be found on [localhost](http://localhost)
+
+### Run tests
 
 How to run tests:
 
+First prepare the testing database:
 ```
-% bundle exec rake
+docker-compose exec -e HANAMI_ENV=test api bundle exec hanami db prepare
 ```
-
-How to run the development console:
-
+Run the tests:
 ```
-% bundle exec hanami console
+docker-compose exec api bundle exec rake spec
 ```
-
-How to run the development server:
-
-```
-% bundle exec hanami server
-```
-
-How to prepare (create and migrate) DB for `development` and `test` environments:
-
-```
-% bundle exec hanami db prepare
-
-% HANAMI_ENV=test bundle exec hanami db prepare
-```
-
-Explore Hanami [guides](https://guides.hanamirb.org/), [API docs](http://docs.hanamirb.org/1.3.3/), or jump in [chat](http://chat.hanamirb.org) for help. Enjoy! 🌸
