@@ -6,9 +6,9 @@
 
 <p align="center">
   <strong>Tag your playlist collection</strong></br>
-  Moodytags is trying to help you sort your collection of playlists better.</br>Providing a possible answer to the <strong>"What should I listen to now?"</strong> question.</br>
-  <img src="https://img.shields.io/github/workflow/status/shiftingphotons/moodytags/Spec"/>
-  <img src="https://img.shields.io/github/v/release/shiftingphotons/moodytags?include_prereleases"/></br>
+  Moodytags is trying to help you sort your collection of playlists better.</br>Providing a possible answer to the <strong>"What should I listen to now?"</strong> question.</br></br>
+  <img src="https://img.shields.io/github/v/release/shiftingphotons/moodytags?include_prereleases"/>
+  <img src="https://img.shields.io/github/workflow/status/shiftingphotons/moodytags/Spec"/></br>
 </p>
 
 ## Setup
