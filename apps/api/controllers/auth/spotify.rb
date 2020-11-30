@@ -19,7 +19,7 @@ module Api
           warden = env['warden']
 
           warden.set_user find_or_create_user
-          redirect_to '/app'
+          redirect_to ENV['REDIRECT_URL_VUE_APP']
         end
 
         private
