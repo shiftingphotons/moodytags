@@ -19,7 +19,7 @@ services:
     deploy:
       replicas: 2
     environment:
-      HANAMI_ENV: production
+      - HANAMI_ENV=production
     secrets:
       - source: env.production
         target: /usr/src/app/.env.production

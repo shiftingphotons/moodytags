@@ -5,28 +5,6 @@ volumes:
   dist:
 
 services:
-  nginx:
-    image: nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./localhost.conf:/etc/nginx/nginx.conf
-      - dist:/etc/nginx/html/
-    depends_on:
-      - api
-      - app
-    networks:
-      - "api.network"
-  db:
-    image: postgres:12
-    volumes:
-      - ./tmp/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=moody_tags
-      - POSTGRES_PASSWORD=moody_tags
-      - POSTGRES_DB=moody_tags_development
-    networks:
-      - "api.network"
   api:
     build: .
     command: bundle exec hanami server --host=0.0.0.0 --port=8000
@@ -38,9 +16,13 @@ services:
       - db
     networks:
       - "api.network"
-  app:
-    image: shiftingphotons/moodytags-client:latest
+  db:
+    image: postgres:12
     volumes:
-      - dist:/app/dist
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=moody_tags
+      - POSTGRES_PASSWORD=moody_tags
+      - POSTGRES_DB=moody_tags_development
     networks:
       - "api.network"

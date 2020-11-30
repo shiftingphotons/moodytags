@@ -42,7 +42,7 @@ module Api
       # URI scheme used by the routing system to generate absolute URLs
       # Defaults to "http"
       #
-      scheme 'https' if ENV['HOST'] == 'production'
+      scheme 'https' if ENV['HANAMI_ENV'] == 'production'
 
       # URI host used by the routing system to generate absolute URLs
       # Defaults to "localhost"
@@ -92,11 +92,7 @@ module Api
       middleware.use Rack::Cors do
         if ENV['HANAMI_ENV'] == 'development'
           allow do
-            origins "http://#{ENV['HOST']}"
-            resource '*', headers: :any, methods: %i[get post patch put], credentials: true
-          end
-          allow do
-            origins "http://#{ENV['HOST']}:8080"
+            origins 'http://localhost:8080'
             resource '*', headers: :any, methods: %i[get post patch put], credentials: true
           end
         end
