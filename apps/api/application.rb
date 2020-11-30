@@ -39,23 +39,10 @@ module Api
       #
       routes 'config/routes'
 
-      # URI scheme used by the routing system to generate absolute URLs
-      # Defaults to "http"
-      #
-      scheme 'https' if ENV['HANAMI_ENV'] == 'production'
-
       # URI host used by the routing system to generate absolute URLs
       # Defaults to "localhost"
       #
       host ENV['HOST']
-
-      # URI port used by the routing system to generate absolute URLs
-      # Argument: An object coercible to integer, defaults to 80 if the scheme
-      # is http and 443 if it's https
-      #
-      # This should only be configured if app listens to non-standard ports
-      #
-      # port 443
 
       # Enable cookies
       # Argument: boolean to toggle the feature
