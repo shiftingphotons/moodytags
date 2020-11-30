@@ -56,7 +56,7 @@ The server should be working.
 » curl localhost:8000/ping
 pong% 
 ```
-For running the client side of the stack, head up to [moodytags-client](https://github.com/shiftingphotons/moodytags-client)
+For running the client side of the stack head up to [moodytags-client](https://github.com/shiftingphotons/moodytags-client).
 
 ### Running the tests
 
