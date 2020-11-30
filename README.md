@@ -24,7 +24,7 @@
   
 ## How To Use
 ### Run It Locally
-While the hosted version can be found [here](https://moodytags.shiftingphotons.dev), moodytags can be run locally.  
+While the hosted version can be found [here](https://moodytags.shiftingphotons.dev), moodytags can be run locally _in development mode_.  
 
 #### Prerequisites
 Spotify is the only integration for now, so you must be user of the platform. For the integration to work, you also must have a developer application on [their platform](https://developer.spotify.com/dashboard/).  
@@ -43,7 +43,7 @@ SPOTIFY_CLIENT_SECRET=YOUR_CLIENT_SECRET
 
 ### Setup
 
-Running the whole application is done through [docker-compose](https://docs.docker.com/compose/):  
+Running the RESTful API is done through [docker-compose](https://docs.docker.com/compose/):  
 ```
 docker-compose up
 ```
@@ -51,7 +51,11 @@ Setup the development database:
 ```
 docker-compose exec api bundle exec hanami db prepare
 ```
-Everything should be working. By default the application should be found on [localhost](http://localhost)
+The server should be working.
+```
+» curl localhost:8000/ping
+pong% 
+```
 
 ### Running the tests
 
